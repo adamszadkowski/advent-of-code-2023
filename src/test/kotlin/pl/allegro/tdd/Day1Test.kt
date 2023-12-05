@@ -57,13 +57,26 @@ class Day1Test {
             expectThat(output).isEqualTo(55712)
         }
 
-        private fun calculate(input: String): Int =
-            input
-                .split("\n")
-                .sumOf { line ->
-                    val digits = line.filter { it.isDigit() }.map { it.digitToInt() }
-                    digits.first() * 10 + digits.last()
-                }
+        private fun calculate(input: String): Int {
+            fun extractDigitFrom(line: String, i: Int) = line.substring(i, i + 1)
+
+            fun findFirst(line: String): String {
+                var i = 0
+                while (!line[i].isDigit()) i++
+
+                return extractDigitFrom(line, i)
+            }
+
+
+            fun findLast(line: String): String {
+                var i = line.length - 1
+                while (!line[i].isDigit()) i--
+
+                return extractDigitFrom(line, i)
+            }
+
+            return input.split("\n").sumOf { (findFirst(it) + findLast(it)).toInt() }
+        }
     }
 
     @Nested
